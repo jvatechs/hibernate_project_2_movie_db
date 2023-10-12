@@ -1,0 +1,22 @@
+<configuration>
+
+    <!-- Console appender for SQL queries -->
+    <appender name="SQL_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <logger name="org.hibernate.SQL" level="DEBUG">
+        <appender-ref ref="SQL_CONSOLE"/>
+    </logger>
+    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="DEBUG">
+        <appender-ref ref="SQL_CONSOLE"/>
+    </logger>
+
+
+    <!-- Root logger with INFO level -->
+    <root level="INFO">
+        <appender-ref ref="SQL_CONSOLE"/>
+    </root>
+
+</configuration>
