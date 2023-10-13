@@ -1,50 +1,51 @@
 package org.jvatechs.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "staff")
+@Table(schema = "movie", name = "staff")
 @Getter
 @Setter
 public class Staff {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "staff_id")
-    private Integer staffId;
+    private Byte staffId;
 
     @Column(name = "first_name")
     private String firstName;
-
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "address_id")
-    private Integer addressId;
+    @OneToOne
+    @JoinColumn(name = "address_id")
+    private Address address;
 
-    @Column(name = "picture")
-    private Integer picture;
+    @Column(columnDefinition = "BLOB")
+    @Lob
+    private byte[] picture;
 
-    @Column(name = "email")
     private String email;
 
-    @Column(name = "store_id")
-    private Integer storeId;
+    @ManyToOne
+    @JoinColumn(name = "store_id")
+    private Store store;
 
-    @Column(name = "active")
-    private Byte active;
+    @Column(name = "active", columnDefinition = "BIT")
+    @Type(type = "org.hibernate.type.NumericBooleanType")
+    private Boolean isActive;
 
-    @Column(name = "username")
     private String username;
-
-    @Column(name = "password")
     private String password;
 
     @Column(name = "last_update")
+    @UpdateTimestamp
     private LocalDateTime lastUpdate;
+
 }

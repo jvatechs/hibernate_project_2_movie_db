@@ -1,4 +1,4 @@
-package org.jvatechs.domain;
+package org.jvatechs.entities;
 
 import static java.util.Objects.isNull;
 

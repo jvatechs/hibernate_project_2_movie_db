@@ -2,7 +2,7 @@ package org.jvatechs.dao;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
-import org.jvatechs.domain.City;
+import org.jvatechs.entities.City;
 
 
 public class CityDAO extends GenericDAO<City> {

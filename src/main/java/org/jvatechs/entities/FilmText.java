@@ -3,24 +3,24 @@ package org.jvatechs.entities;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
 
 @Entity
-@Table(name = "film_text")
+@Table(schema = "movie", name = "film_text")
 @Getter
 @Setter
 public class FilmText {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "film_id")
-    private Integer filmId;
-
-    @Column(name = "title")
-    private String title;
-
-    @Column(name = "description")
-    private String description;
+    private Short id;
 
     @OneToOne
-    @JoinColumn(name = "film_id", referencedColumnName = "film_id")
+    @JoinColumn(name = "film_id")
     private Film film;
+
+    private String title;
+
+    @Column(columnDefinition = "text")
+    @Type(type = "text")
+    private String description;
 }

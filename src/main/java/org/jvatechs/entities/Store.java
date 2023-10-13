@@ -1,29 +1,31 @@
 package org.jvatechs.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "store")
+@Table(schema = "movie", name = "store")
 @Getter
 @Setter
 public class Store {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "store_id")
-    private Integer storeId;
+    private Byte storeId;
 
-    @Column(name = "manager_staff_id")
-    private Integer managerStaffId;
+    @OneToOne
+    @JoinColumn(name = "manager_staff_id")
+    private Staff staff;
 
-    @Column(name = "address_id")
-    private Integer addressId;
+    @OneToOne
+    @JoinColumn(name = "address_id")
+    private Address address;
 
     @Column(name = "last_update")
-    private LocalDateTime lastUpdate;
+    @UpdateTimestamp
+    private LocalDateTime last_update;
 }

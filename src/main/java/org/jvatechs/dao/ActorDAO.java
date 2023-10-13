@@ -1,7 +1,7 @@
 package org.jvatechs.dao;
 
 import org.hibernate.SessionFactory;
-import org.jvatechs.domain.Actor;
+import org.jvatechs.entities.Actor;
 
 public class ActorDAO extends GenericDAO<Actor> {
 

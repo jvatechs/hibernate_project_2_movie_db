@@ -1,7 +1,7 @@
 package org.jvatechs.dao;
 
 import org.hibernate.SessionFactory;
-import org.jvatechs.domain.Country;
+import org.jvatechs.entities.Country;
 
 public class CountryDAO extends GenericDAO<Country> {
     public CountryDAO(SessionFactory sessionFactory) {

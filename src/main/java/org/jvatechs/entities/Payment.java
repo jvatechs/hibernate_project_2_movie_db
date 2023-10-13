@@ -1,39 +1,42 @@
 package org.jvatechs.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "payment")
+@Table(name = "payment", schema = "movie")
 @Getter
 @Setter
 public class Payment {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "payment_id")
-    private Integer paymentId;
+    private Short paymentId;
 
-    @Column(name = "customer_id")
-    private Integer customerId;
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
 
-    @Column(name = "staff_id")
-    private Integer staffId;
+    @ManyToOne
+    @JoinColumn(name = "staff_id")
+    private Staff staff;
 
-    @Column(name = "rental_id")
-    private Integer rentalId;
+    @OneToOne
+    @JoinColumn(name = "rental_id")
+    private Rental rental;
 
-    @Column(name = "amount")
     private BigDecimal amount;
 
     @Column(name = "payment_date")
+    @CreationTimestamp
     private LocalDateTime paymentDate;
-
     @Column(name = "last_update")
+    @UpdateTimestamp
     private LocalDateTime lastUpdate;
 }

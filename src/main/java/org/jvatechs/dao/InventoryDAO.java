@@ -1,7 +1,7 @@
 package org.jvatechs.dao;
 
 import org.hibernate.SessionFactory;
-import org.jvatechs.domain.Inventory;
+import org.jvatechs.entities.Inventory;
 
 public class InventoryDAO extends GenericDAO<Inventory> {
     public InventoryDAO(SessionFactory sessionFactory) {

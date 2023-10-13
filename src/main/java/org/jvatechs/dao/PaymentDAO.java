@@ -1,7 +1,7 @@
 package org.jvatechs.dao;
 
 import org.hibernate.SessionFactory;
-import org.jvatechs.domain.Payment;
+import org.jvatechs.entities.Payment;
 
 public class PaymentDAO extends GenericDAO<Payment> {
     public PaymentDAO(SessionFactory sessionFactory) {

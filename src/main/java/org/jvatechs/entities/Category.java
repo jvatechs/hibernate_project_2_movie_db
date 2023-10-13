@@ -1,26 +1,34 @@
 package org.jvatechs.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
-@Table(name = "category")
+@Table(schema = "movie", name = "category")
 @Getter
 @Setter
 public class Category {
     @Id
     @Column(name = "category_id")
-    private Integer categoryId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Byte id;
 
-    @Column(name = "name")
     private String name;
 
     @Column(name = "last_update")
+    @UpdateTimestamp
     private LocalDateTime lastUpdate;
+
+    @ManyToMany
+    @JoinTable(name = "film_category",
+            joinColumns = @JoinColumn(name = "category_id", referencedColumnName = "category_id"),
+            inverseJoinColumns = @JoinColumn(name = "film_id", referencedColumnName = "film_id"))
+    private Set<Film> films;
+
 }
+

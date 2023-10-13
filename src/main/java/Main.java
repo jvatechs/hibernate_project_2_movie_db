@@ -4,9 +4,14 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.jvatechs.dao.*;
-import org.jvatechs.domain.*;
+import org.jvatechs.entities.*;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.Year;
+import java.util.HashSet;
 import java.util.Properties;
+import java.util.Set;
 
 public class Main {
     private final SessionFactory sessionFactory;
@@ -72,8 +77,99 @@ public class Main {
 
     public static void main(String[] args) {
         Main main = new Main();
-        Customer customer = main.createCustomer();
+//        Customer customer = main.createCustomer();
+//        main.customeReturnInventory();
+//        main.customerRentInventory(customer);
+        main.newFilmWasMade();
     }
+
+    private void newFilmWasMade() {
+        try(Session session = sessionFactory.getCurrentSession()) {
+            Transaction transaction = session.beginTransaction();
+
+            Language language = languageDAO.getItems(0, 20).stream().unordered().findAny().get();
+            Set<Category> categories = new HashSet<>(categoryDAO.getItems(0, 3));
+            Set<Actor> actors = new HashSet<>(actorDAO.getItems(0, 24));
+
+
+            Film film = new Film();
+            Store store = storeDAO.getItems(0,1).get(0);
+
+            film.setTitle("My movie");
+            film.setDescription("Movie about interesting things");
+            film.setReleaseYear(Year.now());
+            film.setLength(Short.valueOf("213"));
+            film.setLanguage(language);
+            film.setOriginalLanguage(language);
+            film.setRentalRate(BigDecimal.ZERO);
+            film.setRentalDuration(Byte.valueOf("66") );
+            film.setReplacementCost(BigDecimal.TEN);
+            film.setActors(actors);
+            film.setCategories(categories);
+            film.setRating(Rating.NC17);
+            film.setSpecialFeatures(Set.of(Feature.TRAILERS, Feature.BEHIND_THE_SCENES));
+            filmDAO.save(film);
+
+            FilmText filmText = new FilmText();
+            filmText.setDescription("Movie about interesting things");
+            filmText.setTitle("My movie");
+            filmText.setId(film.getId());
+            filmTextDAO.save(filmText);
+
+            Inventory inventory = new Inventory();
+            inventory.setFilm(film);
+            inventory.setStore(store);
+            inventoryDAO.save(inventory);
+
+
+            transaction.commit();
+
+        }
+    }
+
+    private void customerRentInventory(Customer customer) {
+        try (Session session = sessionFactory.getCurrentSession()) {
+            Transaction transaction = session.beginTransaction();
+            Film film = filmDAO.getFirstAvailableFilm();
+            Store store = storeDAO.getItems(0,1).get(0);
+
+            Inventory inventory = new Inventory();
+            inventory.setFilm(film);
+            inventory.setStore(store);
+            inventoryDAO.save(inventory);
+
+            Staff staff = store.getStaff();
+
+            Rental rental = new Rental();
+            rental.setRentalDate(LocalDateTime.now());
+            rental.setInventory(inventory);
+            rental.setCustomer(customer);
+            rental.setStaff(staff);
+            rentalDAO.save(rental);
+
+            Payment payment = new Payment();
+            payment.setCustomer(customer);
+            payment.setStaff(staff);
+            payment.setAmount(BigDecimal.valueOf(123.76));
+            payment.setRental(rental);
+            paymentDAO.save(payment);
+
+
+            transaction.commit();
+        }
+    }
+
+    private void customeReturnInventory() {
+        try (Session session = sessionFactory.getCurrentSession()) {
+            Transaction transaction = session.beginTransaction();
+            Rental rental = rentalDAO.getUnreturnedRental();
+            rental.setReturnDate(LocalDateTime.now());
+            rentalDAO.save(rental);
+            transaction.commit();
+        }
+
+    }
+
 
     private Customer createCustomer() {
         try (Session session = sessionFactory.getCurrentSession()) {

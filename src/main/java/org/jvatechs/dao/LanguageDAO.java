@@ -1,7 +1,7 @@
 package org.jvatechs.dao;
 
 import org.hibernate.SessionFactory;
-import org.jvatechs.domain.Language;
+import org.jvatechs.entities.Language;
 
 public class LanguageDAO extends GenericDAO<Language> {
     public LanguageDAO(SessionFactory sessionFactory) {
