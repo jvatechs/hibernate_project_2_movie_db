@@ -32,6 +32,7 @@
 # since they will be recreated, and may cause churn.  Uncomment if using
 # auto-import.
  .idea/artifacts
+ .idea/vcs.xml
  .idea/compiler.xml
  .idea/jarRepositories.xml
  .idea/modules.xml
@@ -77,4 +78,5 @@ fabric.properties
 .idea/caches/build_file_checksums.ser
 /.idea/
 /.idea.bak/
+/.idea/
 /.idea/
